@@ -1,10 +1,47 @@
 ;; Biff transaction. See https://biffweb.com/docs/reference/transactions/
-[{:db/doc-type :user
-  :xt/id :db.id/user-a
-  :user/email "a@example.com"
-  :user/foo "Some Value"
+
+[;; === テストユーザー ===
+ {:db/doc-type :user
+  :xt/id :db.id/user-alice
+  :user/email "alice@example.com"
   :user/joined-at :db/now}
- {:db/doc-type :msg
-  :msg/user :db.id/user-a
-  :msg/text "hello there"
-  :msg/sent-at :db/now}]
+
+ {:db/doc-type :user
+  :xt/id :db.id/user-bob
+  :user/email "bob@example.com"
+  :user/joined-at :db/now
+  :user/stripe-customer-id "cus_test_bob"}
+
+ ;; === 決済記録 ===
+ {:db/doc-type :payment
+  :xt/id :db.id/payment-1
+  :payment/stripe-session-id "cs_test_abc123"
+  :payment/stripe-payment-intent-id "pi_test_abc123"
+  :payment/amount 1000
+  :payment/currency "jpy"
+  :payment/status "succeeded"
+  :payment/user :db.id/user-bob
+  :payment/created-at :db/now}
+
+ ;; === ゲスト決済（user なし） ===
+ {:db/doc-type :payment
+  :xt/id :db.id/payment-2
+  :payment/stripe-session-id "cs_test_xyz789"
+  :payment/amount 500
+  :payment/currency "jpy"
+  :payment/status "succeeded"
+  :payment/user nil
+  :payment/created-at :db/now}
+
+ ;; === Webhook イベント ===
+ {:db/doc-type :webhook-event
+  :xt/id :db.id/webhook-1
+  :webhook-event/stripe-id "evt_test_checkout_completed"
+  :webhook-event/type "checkout.session.completed"
+  :webhook-event/processed-at :db/now}
+
+ {:db/doc-type :webhook-event
+  :xt/id :db.id/webhook-2
+  :webhook-event/stripe-id "evt_test_payment_succeeded"
+  :webhook-event/type "payment_intent.succeeded"
+  :webhook-event/processed-at :db/now}]

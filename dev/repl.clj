@@ -29,9 +29,9 @@
 
 (defn add-fixtures []
   (biff/submit-tx (get-context)
-    (-> (io/resource "fixtures.edn")
-        slurp
-        edn/read-string)))
+                  (-> (io/resource "fixtures.edn")
+                      slurp
+                      edn/read-string)))
 
 (defn check-config []
   (let [prod-config (biff/use-aero-config {:biff.config/profile "prod"})
@@ -74,13 +74,30 @@
   (let [{:keys [biff/db] :as ctx} (get-context)
         user-id (biff/lookup-id db :user/email "hello@example.com")]
     (biff/submit-tx ctx
-      [{:db/doc-type :user
-        :xt/id user-id
-        :db/op :update
-        :user/email "new.address@example.com"}]))
+                    [{:db/doc-type :user
+                      :xt/id user-id
+                      :db/op :update
+                      :user/email "new.address@example.com"}]))
 
   (sort (keys (get-context)))
 
   ;; Check the terminal for output.
   (biff/submit-job (get-context) :echo {:foo "bar"})
   (deref (biff/submit-job-for-result (get-context) :echo {:foo "bar"})))
+
+
+(comment
+
+  ;; ユーザーを作成
+  (biff/submit-tx (get-context)
+                  [{:db/doc-type :user
+                    :xt/id (random-uuid)
+                    :user/email "test@example.com"
+                    :user/joined-at (java.util.Date.)}])
+  ;; 全ユーザーを取得
+  (let [{:keys [biff/db]} (get-context)]
+    (q db
+       '{:find (pull user [*])
+         :where [[user :user/email]]}))
+
+  :rcf)

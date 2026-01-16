@@ -7,6 +7,7 @@
             [com.myapp.ui :as ui]
             [com.myapp.worker :as worker]
             [com.myapp.schema :as schema]
+            [com.myapp.billing.donate :as donate]
             [clojure.test :as test]
             [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as tn-repl]
@@ -20,7 +21,8 @@
    (biff/authentication-module {})
    home/module
    schema/module
-   worker/module])
+   worker/module
+   donate/module])
 
 (def routes [["" {:middleware [mid/wrap-site-defaults]}
               (keep :routes modules)]
