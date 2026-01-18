@@ -51,6 +51,11 @@
       muuntaja/wrap-format
       (rd/wrap-defaults rd/api-defaults)))
 
+;; Webhook 用: muuntaja なし（raw body を保持）
+(defn wrap-raw-api-defaults [handler]
+  (-> handler
+      (rd/wrap-defaults rd/api-defaults)))
+
 (defn wrap-base-defaults [handler]
   (-> handler
       biff/wrap-https-scheme
@@ -58,3 +63,4 @@
       biff/wrap-internal-error
       biff/wrap-ssl
       biff/wrap-log-requests))
+

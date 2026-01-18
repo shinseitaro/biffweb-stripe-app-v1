@@ -62,4 +62,5 @@
 
  ;; Uncomment this line if you have any ssh-related problems:
  ;; :biff.tasks/skip-ssh-agent true
- :stripe/secret-key    #biff/secret STRIPE_SECRET_KEY}
+ :stripe/secret-key    #biff/secret STRIPE_SECRET_KEY
+ :stripe/webhook-secret #biff/secret STRIPE_WEBHOOK_SECRET}

@@ -8,6 +8,7 @@
             [com.myapp.worker :as worker]
             [com.myapp.schema :as schema]
             [com.myapp.billing.donate :as donate]
+            [com.myapp.billing.webhooks :as webhooks]
             [clojure.test :as test]
             [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as tn-repl]
@@ -22,12 +23,15 @@
    home/module
    schema/module
    worker/module
-   donate/module])
+   donate/module
+   webhooks/module])
 
 (def routes [["" {:middleware [mid/wrap-site-defaults]}
               (keep :routes modules)]
              ["" {:middleware [mid/wrap-api-defaults]}
-              (keep :api-routes modules)]])
+              (keep :api-routes modules)]
+             ["" {:middleware [mid/wrap-raw-api-defaults]}
+              (keep :raw-api-routes modules)]])
 
 (def handler (-> (biff/reitit-handler {:routes routes})
                  mid/wrap-base-defaults))

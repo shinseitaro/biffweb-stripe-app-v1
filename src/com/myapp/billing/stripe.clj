@@ -10,11 +10,13 @@
   "Stripe API へのリクエストを実行"
   [{:keys [method endpoint params secret-key]}]
   (let [url (str "https://api.stripe.com/v1" endpoint)
+        ;; GET リクエストは query-params、POST/DELETE は form-params を使用
+        param-key (if (= method :get) :query-params :form-params)
         response (http/request
                   {:method method
                    :url url
                    :basic-auth [secret-key ""]
-                   :form-params params
+                   param-key params
                    :throw-exceptions false})
         body (-> response :body (json/parse-string true))]
     (if-let [error (:error body)]
@@ -53,6 +55,23 @@
                  :secret-key secret-key})]
     (first (:data result))))
 
+(comment
+  (require '[repl])
+  (def ctx (repl/get-context))
+
+  (find-customer-by-email ctx "bob@example.com")
+  (find-customer-by-email ctx "alice@example.com")
+
+
+  :rcf)
+
+(comment
+  (def bob-user-id
+
+    (let [{:keys [biff/db]} (repl/get-context)]
+      (biff/lookup db :user/email "bob@example.com")))
+  (get-or-create-customer ctx bob-user-id)
+  :rcf)
 
 (comment
   (require '[repl])

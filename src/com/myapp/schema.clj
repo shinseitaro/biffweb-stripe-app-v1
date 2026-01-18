@@ -11,13 +11,15 @@
    :payment/id :uuid
    :payment [:map {:closed true}
              [:xt/id :payment/id]
-             [:payment/stripe-session-id :string]
-             [:payment/stripe-payment-intent-id {:optional true} :string]
+             [:payment/stripe-session-id {:optional true} :string]
+             [:payment/stripe-payment-intent-id  :string]
              [:payment/amount :int]
              [:payment/currency :string]
              [:payment/status :string]
              [:payment/user {:optional true} [:or :user/id :nil]]
              [:payment/created-at inst?]]
+
+
 
    :webhook-event/id :uuid
    :webhook-event [:map {:closed true}

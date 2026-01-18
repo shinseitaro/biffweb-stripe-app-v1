@@ -101,3 +101,25 @@
          :where [[user :user/email]]}))
 
   :rcf)
+
+(comment
+
+  (def ctx (repl/get-context))
+  (def db (:biff/db ctx))
+
+  ;; 全ての決済記録を取得
+  (require '[xtdb.api :as xt])
+  (xt/q db '{:find [(pull ?p [*])]
+             :where [[?p :payment/stripe-payment-intent-id]]})
+
+  :rcf)
+
+(comment
+  (def ctx (repl/get-context))
+  (def db (:biff/db ctx))
+  (biff/lookup db :user/email "bob@example.com")
+  (biff/lookup db :user/email "alice@example.com")
+  (xt/q db '{:find [(pull ?u [*])]
+             :where [[?u :user/email]]})
+  :rcf)
+

@@ -9,8 +9,7 @@
  {:db/doc-type :user
   :xt/id :db.id/user-bob
   :user/email "bob@example.com"
-  :user/joined-at :db/now
-  :user/stripe-customer-id "cus_test_bob"}
+  :user/joined-at :db/now}
 
  ;; === 決済記録 ===
  {:db/doc-type :payment
@@ -26,7 +25,7 @@
  ;; === ゲスト決済（user なし） ===
  {:db/doc-type :payment
   :xt/id :db.id/payment-2
-  :payment/stripe-session-id "cs_test_xyz789"
+  :payment/stripe-payment-intent-id "pi_test_xyz789"
   :payment/amount 500
   :payment/currency "jpy"
   :payment/status "succeeded"

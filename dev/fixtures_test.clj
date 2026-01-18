@@ -69,7 +69,7 @@
   (biff/submit-tx (repl/get-context)
                   [{:db/doc-type :payment
                     :xt/id (random-uuid)
-                    ;; :payment/stripe-session-id がない → エラー
+                    ;; :payment/stripe-payment-intent-id がない → エラー
                     :payment/amount 1000
                     :payment/currency "jpy"
                     :payment/status "succeeded"
